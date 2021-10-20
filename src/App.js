@@ -2,6 +2,7 @@ import HoverParagraph from './components/HoverParagraph';
 import Logo from './components/Logo';
 import Users from './components/Users';
 import Form from './components/Form'
+import NoControlForm from './components/NoControlForm';
 
 function App() {
   return (
@@ -10,7 +11,10 @@ function App() {
       <Users />
       <HoverParagraph />
       <hr />
-      <Form />
+      {/* <Form /> */}
+      <hr />
+      <h1>Статическая</h1>
+      <NoControlForm />
     </div>
   );
 }
