@@ -1,44 +1,60 @@
-import React from 'react';
-import TextField from '@mui/material/TextField';
-import { Button } from '@mui/material';
-
 export default function Form() {
-  const [firstname, setFirstname] = React.useState('');
-  const [lastname, setLastname] = React.useState('');
-  const [email, setEmail] = React.useState('');
-  const [password, setPassword] = React.useState('');
+  const [fields, setFields] = React.useState({
+    firstname: '',
+    lastname: '',
+    password: '',
+    email: '',
+  });
+
+  const handleChangeInput = (event) => {
+    const { name, value } = event.target;
+    setFields({
+      ...fields,
+      [name]: value,
+    });
+  };
 
   const handleClickClear = () => {
-    setFirstname('');
-    setLastname('');
-    setEmail('');
-    setPassword('');
+    setFields({
+      firstname: '',
+      lastname: '',
+      password: '',
+      email: '',
+    });
   };
 
   const handleClickRegister = () => {
-    const form = {
-      firstname,
-      lastname,
-      email,
-      password,
-    };
+    if (!fields.email.includes('@')) {
+      alert('почта неверная');
+      return;
+    }
+    if (fields.firstname.length < 3 || fields.lastname < 3) {
+      alert('Слишком короткое имя');
+      return;
+    }
+    console.log('Зарегистрировались', fields);
     handleClickClear();
-    console.log(form);
   };
+
+  const isValid = !!fields.firstname && !!fields.email && !!fields.lastname && !!fields.password;
+
+  console.log(isValid);
 
   return (
     <div>
       <div className="row">
         <TextField
-          onChange={(e) => setFirstname(e.target.value)}
-          value={firstname}
+          name="firstname"
+          onChange={handleChangeInput}
+          value={fields.firstname}
           className="inptTxt"
           label="Имя"
           fullWidth
         />
         <TextField
-          onChange={(e) => setLastname(e.target.value)}
-          value={lastname}
+          name="lastname"
+          onChange={handleChangeInput}
+          value={fields.lastname}
           className="inptTxt"
           label="Фамилия"
           fullWidth
@@ -46,15 +62,17 @@ export default function Form() {
       </div>
       <div className="row">
         <TextField
-          onChange={(e) => setEmail(e.target.value)}
-          value={email}
+          name="email"
+          onChange={handleChangeInput}
+          value={fields.email}
           className="inptTxt"
           label="E-mail"
           fullWidth
         />
         <TextField
-          onChange={(e) => setPassword(e.target.value)}
-          value={password}
+          name="password"
+          onChange={handleChangeInput}
+          value={fields.password}
           type="password"
           className="inptTxt"
           label="Пароль"
@@ -63,10 +81,20 @@ export default function Form() {
       </div>
       <br />
       <div className="row">
-        <Button onClick={handleClickRegister} className="btn" variant="contained" color="primary">
+        <Button
+          disabled={!isValid}
+          onClick={handleClickRegister}
+          className="btn"
+          variant="contained"
+          color="primary">
           Зарегистрироваться
         </Button>
-        <Button onClick={handleClickClear} className="btn" variant="contained" color="secondary">
+        <Button
+          disabled={isValid}
+          onClick={handleClickClear}
+          className="btn"
+          variant="contained"
+          color="secondary">
           Очистить
         </Button>
       </div>
